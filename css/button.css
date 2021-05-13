@@ -1,0 +1,57 @@
+/* Defining color palette */
+:root {
+    --text: #DFDFE0;
+    --add-btn: #0075DB;
+    --delete-btn: #FF444C;
+}
+
+/* Button */
+#button-wrapper{
+    margin-top: 2%;
+    margin-left: 10%;
+}
+
+.button{
+    font-size: 20px;
+    margin-right: 5px;
+    color: var(--text);
+    border-radius: 30px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#add-button{
+    padding: 8px 20px;
+    background-color: var(--add-btn);
+}
+
+#delete-button{
+    padding: 8px 25px;
+    background-color: var(--delete-btn);
+}
+
+#button-text{
+    position: relative;
+    bottom: 4px;
+}
+
+#add-icon{
+    height: 25px;
+    width: 30px;
+}
+#delete-icon{
+    height: 25px;
+    width: 30px;
+}
+
+.icon{
+    margin-right: 2px;
+    margin-left: -5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}

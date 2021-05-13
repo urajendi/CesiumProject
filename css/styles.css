@@ -1,0 +1,54 @@
+/* Defining color palette */
+:root {
+    --background: #29292F;
+    --materials-bg: #17171A;
+    --materials-outline: #565664;
+    --menu-bg: #1D1D21;
+    --menu-text: #DDDDDD;
+    --input-bg: #393942;
+    --field-bg: #393942;
+    --text: #DFDFE0;
+    --add-btn: #0075DB;
+    --delete-btn: #FF444C;
+
+    --sand: #F7B500;
+    --gravel: #44D7B6;
+}
+
+body{
+    background-color: var(--background);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+/* Title */
+#title{
+    font-size: 40px;
+    margin-left: 10%;
+    margin-top: 5%;
+    font-weight: bold;
+}
+
+/* Materials */
+#materials{
+    width: 350px;
+    height: 450px;
+    outline: 2.5px solid var(--materials-outline);
+    background-color: var(--materials-bg);
+    margin-left: 10%;
+    margin-top: 2%;
+    z-index: 7;
+}
+
+/* Total */
+#total-wrapper{
+    font-size: 25px;
+    margin-left: 10%;
+    margin-top: 2%;
+}
+
+#total-value{
+    margin-left: 2%;
+}

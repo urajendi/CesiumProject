@@ -1,0 +1,49 @@
+/* Defining color palette */
+:root {
+    --default-text: #AEAEAF;
+    --materials-outline: #565664;
+    --materials-text: #DDDDDD;
+    --transparent: rgba(0,0,0,0);
+}
+
+/* #materials-wrapper{
+    overflow-y: scroll;
+} */
+
+#default-text{
+    font-weight: 300;
+    font-style: italic;
+    text-anchor: middle;
+    font-size: 22px;
+    font-family: 'Open Sans', sans-serif;
+    fill: var(--default-text);
+    color: var(--default-text);
+}
+
+.rowRectangle{
+    width: 350px;
+    height: 80px;
+    fill: var(---transparent);
+    opacity: 0;
+    outline: 2.5px solid var(--materials-outline);
+}
+
+.colorCircle{
+    padding-bottom: 30px
+}
+
+.itemName{
+    font-size: 25px;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    fill: var(--materials-text);
+    letter-spacing: 1px;
+}
+
+.itemVolume{
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    fill: var(--materials-text);
+    letter-spacing: 1px;
+}

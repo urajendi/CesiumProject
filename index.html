@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='UTF-8'>
+    <title>Cesium Project</title>
+
+    <!-- Stylesheet -->
+    <link rel='stylesheet' href='css/styles.css'>
+    <link rel='stylesheet' href='css/menu.css'>
+    <link rel='stylesheet' href='css/button.css'>
+    <link rel='stylesheet' href='css/matTable.css'>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src='https://d3js.org/d3.v5.min.js'></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script type="text/javascript" src='js/scripts.js'></script>
+    <script type="text/javascript" src='js/input-1.js'></script>
+    <script type="text/javascript" src='js/input-2.js'></script>
+
+    <script type="text/javascript">
+        $("#color").change(function(event) {
+            console.log($(this).val());
+            $("#color-wrapper").css('background-color',$(this).val());
+        });
+
+        $("#color-wrapper").click(function(event) {
+            console.log("hello");
+            $("#color").click();
+        });
+    </script>
+
+  </head>
+  <body>
+    <div id='wrapper'>
+        <div id="title">Materials</div>
+        <div id="button-wrapper">
+            <button class="button" id="add-button">
+                <img id="add-icon" src="icons/add.png" class="icon">
+                <span id="button-text">Add</span>
+            </button>
+            <button class="button" id="delete-button">
+                <img id="delete-icon" src="icons/delete-on.png" class="icon">
+                <span id="button-text">Delete</span>
+            </button>
+        </div>
+        <div id="materials-wrapper">
+            <svg id='materials'>
+                <g id="default-text"></g>
+            </svg>
+        </div>
+        <div id='menu'>
+            <div id="form-wrapper-left">
+                <div class="form-text">
+                    Name<br />
+                    <input type="text" id="mname"><br />
+                </div>
+                <div class="form-item">
+                    Volume(㎥)<br />
+                    <div class="volume">
+                        <input type="number" min="0" step="1" value="0" id="mvolume"><br />
+                    </div>
+                </div>
+                <div class="datepicker" style="margin-top: 25px;">
+                    Delivery Date<br />
+                    <input type="date" id="mddate">
+                </div>
+            </div>
+            <div id="form-wrapper-right">
+                <div class="form-color">
+                    Color<br />
+                    <input type='color' value='#FFFFFF' class='bar' id='mcolor'>
+                </div>
+                <div class="form-item" style="margin-top: -5px;">
+                    Cost (USD per ㎥)<br />
+                    <div class="cost">
+                        <input type="number" min="0" step="0.01" value="0" id="mcost">
+                    </div>
+                </div>
+                <div class="form-error">
+                    <span id="waitMsg" class="message wait"></span>
+                    <span id="errorMsg" class="message warning"></span>
+                    <span id="successMsg" class="message success"></span>
+                </div>
+            </div>
+        </div>
+        <div id="total-wrapper">
+            Total Cost: <span id="total-value">$0.00</span>
+        </div>
+    </div>
+  </body>
+</html>
