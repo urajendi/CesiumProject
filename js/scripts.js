@@ -42,9 +42,9 @@ var defaultText;
 // Defining hover and onclick attributes
 var hoverColor = "#000344";
 var hoverOpacity = 0.8;
-var clickColor = "#FFFFFF"; 
-var clickOpacity = 0.2;
-
+var clickColor = "#000344"; 
+var clickOpacity = 0.8;
+var hoverTextMenu;
 
 // This runs when the page is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     mvolume = document.getElementById("mvolume").value;
     mddate = document.getElementById("mddate").valueAsDate;
+
     // Adding one day to the date because default javascript fetchs one day prior to current date
     mddate.setDate(mddate.getDate() + 1);   
     mcolor = document.getElementById("mcolor").value;
@@ -125,6 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Onclick for add 
     addButton.on('mouseover', function() {
+        // Removing the hover text
+        hoverTextMenu = document.getElementById("hover-text");
+        if(hoverTextMenu!=null){
+            hoverTextMenu.remove();
+        }
         formLeft.style.visibility = "visible";
         formRight.style.visibility = "visible";
     })

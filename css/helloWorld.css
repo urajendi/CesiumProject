@@ -1,0 +1,31 @@
+/* Defining color palette */
+:root {
+    --background: #29292F;
+    --text: #DFDFE0;
+    --hoverColor: #0075DB;
+}
+
+body{
+    background-color: var(--background);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 900;
+    font-size: 50px;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+a{
+    text-decoration: none;
+    color: var(--text);
+}
+a:hover{
+    color: var(--hoverColor);
+}
+span{
+    font-size: 20px;
+}
+
+.center {
+    text-align: center;
+    padding-top: 250px;
+}

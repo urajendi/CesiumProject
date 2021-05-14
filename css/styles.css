@@ -20,6 +20,10 @@ body{
     color: var(--text);
 }
 
+button{
+    text-decoration: none;
+}
+
 /* Title */
 #title{
     font-size: 40px;
@@ -43,6 +47,8 @@ body{
 /* Total */
 #total-wrapper{
     font-size: 25px;
+    position: absolute;
+    width: 350px;
     margin-left: 10%;
     margin-top: 2%;
 }
