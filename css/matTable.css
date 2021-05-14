@@ -4,20 +4,7 @@
     --materials-outline: #565664;
     --materials-text: #DDDDDD;
     --transparent: rgba(0,0,0,0);
-}
-
-/* #materials-wrapper{
-    overflow-y: scroll;
-} */
-
-#default-text{
-    font-weight: 300;
-    font-style: italic;
-    text-anchor: middle;
-    font-size: 22px;
-    font-family: 'Open Sans', sans-serif;
-    fill: var(--default-text);
-    color: var(--default-text);
+    --hoverColor: #000344;
 }
 
 .rowRectangle{
@@ -25,6 +12,13 @@
     height: 80px;
     fill: var(---transparent);
     opacity: 0;
+    outline: 2.5px solid var(--materials-outline);
+}
+.rowRectangle-clicked{
+    width: 350px;
+    height: 80px;
+    fill: var(---hoverColor);
+    opacity: 1;
     outline: 2.5px solid var(--materials-outline);
 }
 
@@ -38,6 +32,7 @@
     font-family: 'Open Sans', sans-serif;
     fill: var(--materials-text);
     letter-spacing: 1px;
+    cursor: default;
 }
 
 .itemVolume{
@@ -46,4 +41,5 @@
     font-family: 'Open Sans', sans-serif;
     fill: var(--materials-text);
     letter-spacing: 1px;
+    cursor: default;
 }

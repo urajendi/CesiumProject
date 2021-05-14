@@ -10,9 +10,6 @@
     --text: #DFDFE0;
     --add-btn: #0075DB;
     --delete-btn: #FF444C;
-
-    --sand: #F7B500;
-    --gravel: #44D7B6;
 }
 
 body{
@@ -40,6 +37,7 @@ body{
     margin-left: 10%;
     margin-top: 2%;
     z-index: 7;
+    overflow-y: scroll;
 }
 
 /* Total */

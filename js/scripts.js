@@ -34,12 +34,17 @@ var dateFormat = "MM-DD-YYYY";
 // Defining JSON object to store materials list
 var matJSON = [];
 var matJSONLength;
+var delJSON = [];
 
 // Defining matTable elements
 var defaultText;
 
-// Defining hover attributes
+// Defining hover and onclick attributes
 var hoverColor = "#000344";
+var hoverOpacity = 0.8;
+var clickColor = "#FFFFFF"; 
+var clickOpacity = 0.2;
+
 
 // This runs when the page is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -62,7 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("id", "initial-text")
         .attr("transform", `translate(${matInnerWidth/2+margin.right},${matInnerHeight/2+margin.top+margin.bottom})`)
         .append("text")
-        .text("No Materials");
+        .text("No Materials")
+        .style("font-weight", 300)
+        .style("font-style", "italic")
+        .style("text-anchor", "middle")
+        .style("font-size", "22px")
+        .style("font-family", "'Open Sans', sans-serif;")
+        .style("fill", "#AEAEAF")
+        .style("color", "#AEAEAF");
 
     // Setting default date to today
     today = new Date();
@@ -124,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Do nothing
     })
     .on('click', function() {
-        console.log("Clicked!!");
 
         // Emptying the error message
         errorMsg.innerHTML = "";
@@ -155,12 +166,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to validate the form input
 function validateInput(){
     // Logs for form values
-    console.log("----Log for form values----");
-    console.log("mname = "+mname);
-    console.log("mvolume = "+mvolume);
-    console.log("mddate = "+moment(mddate).format(dateFormat));
-    console.log("mcolor = "+mcolor);
-    console.log("mcost = "+mcost);
+    // console.log("----Log for form values----");
+    // console.log("mname = "+mname);
+    // console.log("mvolume = "+mvolume);
+    // console.log("mddate = "+moment(mddate).format(dateFormat));
+    // console.log("mcolor = "+mcolor);
+    // console.log("mcost = "+mcost);
 
     // Defining check variables for form items
     var isNameEmpty = false;
@@ -192,13 +203,13 @@ function validateInput(){
     }
 
     // Logs for inital checksum
-    console.log("----Log for inital checksum----");
-    console.log("trueCount = "+trueCount);
-    console.log("isNameEmpty = "+isNameEmpty);
-    console.log("isVolZero = "+isVolZero);
-    console.log("isCostZero = "+isCostZero);
-    console.log("isDateDefault = "+isDateDefault);
-    console.log("isColorDefault = "+isColorDefault);
+    // console.log("----Log for inital checksum----");
+    // console.log("trueCount = "+trueCount);
+    // console.log("isNameEmpty = "+isNameEmpty);
+    // console.log("isVolZero = "+isVolZero);
+    // console.log("isCostZero = "+isCostZero);
+    // console.log("isDateDefault = "+isDateDefault);
+    // console.log("isColorDefault = "+isColorDefault);
     
     // 1. Empty or zero or default value checks
     if(trueCount>1){
@@ -249,12 +260,12 @@ function validateInput(){
 // Function to store materials to table
 function appendMat(mname, mvolume, mddate, mcolor, mcost){
     // Logs for form values
-    console.log("----Log for form values----");
-    console.log("mname = "+mname);
-    console.log("mvolume = "+mvolume);
-    console.log("mddate = "+moment(mddate).format(dateFormat));
-    console.log("mcolor = "+mcolor);
-    console.log("mcost = "+mcost);
+    // console.log("----Log for form values----");
+    // console.log("mname = "+mname);
+    // console.log("mvolume = "+mvolume);
+    // console.log("mddate = "+moment(mddate).format(dateFormat));
+    // console.log("mcolor = "+mcolor);
+    // console.log("mcost = "+mcost);
 
     var record = {}
     record["Name"] = mname;
@@ -268,8 +279,11 @@ function appendMat(mname, mvolume, mddate, mcolor, mcost){
 
     matJSON.push(record);
 
-    drawTable(matJSON, ["Name", "Volume", "Date", "Color", "Cost", "x", "y", "text"]);
+    drawTable(matJSON);
     updateTotal(matJSON);
+
+    // Enabling delete button 
+    delButton = document.getElementById("delete-button");
 
     matJSONLength = matJSON.length;
     if(matJSONLength<1){
@@ -290,16 +304,20 @@ function appendMat(mname, mvolume, mddate, mcolor, mcost){
         delIcon.src="icons/delete-on.png";
         delIcon.style.cursor="pointer";
     }
-    console.log("----Materials List----");
-    console.log(matJSON);
+    
+    var deleteButton = d3.select("#delete-button");
+    // Onclick for delete 
+    if(delButton.disabled == false){
+        deleteButton.on('click', function() {
+            deleteItems(matJSON);
+        });
+    }
 }
 
 // Function to display materials list
-function drawTable(matJSON, columns){
+function drawTable(matJSON){
 
     matSvg.selectAll("*").remove();
-
-    console.log("----JSON name----");
 
     var lineHeight = 0;
 
@@ -322,27 +340,40 @@ function drawTable(matJSON, columns){
                         })
                         .on('mouseover', function(d, i) {
                             var rectID = document.getElementById("rect-"+i);
-                            rectID.style.fill = hoverColor;
-                            rectID.style.opacity = 1;
-                            console.log(i+"mouseover!!" + d.Name);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = hoverColor;
+                                rectID.style.opacity = hoverOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
                         })
                         .on('mousemove',function(d, i) {
                             var rectID = document.getElementById("rect-"+i);
-                            rectID.style.fill = hoverColor;
-                            rectID.style.opacity = 1;
-                            console.log(i+"mousemove!!" + d.Name);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = hoverColor;
+                                rectID.style.opacity = hoverOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
                         })
                         .on('mouseout', function(d, i) {
                             var rectID = document.getElementById("rect-"+i);
-                            rectID.style.fill = "rgba(0,0,0,0)";
-                            rectID.style.opacity = 0;
-                            console.log(i+"mouseout!!" + d.Name);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = "rgba(0,0,0,0)";
+                                rectID.style.opacity = 0;
+                                rectID.style.cursor = "default";
+                            }
                         })
                         .on('click', function(d, i) {
-                            var rectID = document.getElementById("rect-"+i);
-                            rectID.style.fill = hoverColor;
-                            rectID.style.opacity = 1;
-                            console.log(i+"click!!" + d.Name);
+                            var rectID = document.getElementById("rect-"+i); 
+                            if(rectID.getAttribute("class")=="rowRectangle-clicked"){
+                                rectID.setAttribute("class", "rowRectangle");      
+                                rectID.style.fill = "rgba(0,0,0,0)";
+                                rectID.style.opacity = 0;
+                            } else {
+                                rectID.setAttribute("class", "rowRectangle-clicked");    
+                                rectID.style.fill = clickColor;
+                                rectID.style.opacity = clickOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
                         });
 
     var circle = matSvg.selectAll("g")
@@ -366,6 +397,43 @@ function drawTable(matJSON, columns){
                     .attr("r", 25)
                     .attr("transform", function(d, i) {
                         return `translate(${40},${d.y+(60)*i+40})`;
+                    })
+                    .on('mouseover', function(d, i) {
+                        var rectID = document.getElementById("rect-"+i);
+                        if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                            rectID.style.fill = hoverColor;
+                            rectID.style.opacity = hoverOpacity;
+                            rectID.style.cursor = "pointer";
+                        }
+                    })
+                    .on('mousemove',function(d, i) {
+                        var rectID = document.getElementById("rect-"+i);
+                        if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                            rectID.style.fill = hoverColor;
+                            rectID.style.opacity = hoverOpacity;
+                            rectID.style.cursor = "pointer";
+                        }
+                    })
+                    .on('mouseout', function(d, i) {
+                        var rectID = document.getElementById("rect-"+i);
+                        if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                            rectID.style.fill = "rgba(0,0,0,0)";
+                            rectID.style.opacity = 0;
+                            rectID.style.cursor = "default";
+                        }
+                    })
+                    .on('click', function(d, i) {
+                        var rectID = document.getElementById("rect-"+i); 
+                        if(rectID.getAttribute("class")=="rowRectangle-clicked"){
+                            rectID.setAttribute("class", "rowRectangle");      
+                            rectID.style.fill = "rgba(0,0,0,0)";
+                            rectID.style.opacity = 0;
+                        } else {
+                            rectID.setAttribute("class", "rowRectangle-clicked");    
+                            rectID.style.fill = clickColor;
+                            rectID.style.opacity = clickOpacity;
+                            rectID.style.cursor = "pointer";
+                        }
                     });
     
     var itemName = matSvg.selectAll("g")
@@ -388,6 +456,43 @@ function drawTable(matJSON, columns){
                         .attr("r", 25)
                         .attr("transform", function(d, i) {
                             return `translate(${80},${(80*(i+1)-40)})`
+                        })
+                        .on('mouseover', function(d, i) {
+                            var rectID = document.getElementById("rect-"+i);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = hoverColor;
+                                rectID.style.opacity = hoverOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
+                        })
+                        .on('mousemove',function(d, i) {
+                            var rectID = document.getElementById("rect-"+i);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = hoverColor;
+                                rectID.style.opacity = hoverOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
+                        })
+                        .on('mouseout', function(d, i) {
+                            var rectID = document.getElementById("rect-"+i);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = "rgba(0,0,0,0)";
+                                rectID.style.opacity = 0;
+                                rectID.style.cursor = "default";
+                            }
+                        })
+                        .on('click', function(d, i) {
+                            var rectID = document.getElementById("rect-"+i); 
+                            if(rectID.getAttribute("class")=="rowRectangle-clicked"){
+                                rectID.setAttribute("class", "rowRectangle");      
+                                rectID.style.fill = "rgba(0,0,0,0)";
+                                rectID.style.opacity = 0;
+                            } else {
+                                rectID.setAttribute("class", "rowRectangle-clicked");    
+                                rectID.style.fill = clickColor;
+                                rectID.style.opacity = clickOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
                         });
 
     var itemVolume = matSvg.selectAll("g")
@@ -410,6 +515,43 @@ function drawTable(matJSON, columns){
                         .attr("r", 25)
                         .attr("transform", function(d, i) {
                             return `translate(${80},${(80*(i+1)-20)})`
+                        })
+                        .on('mouseover', function(d, i) {
+                            var rectID = document.getElementById("rect-"+i);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = hoverColor;
+                                rectID.style.opacity = hoverOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
+                        })
+                        .on('mousemove',function(d, i) {
+                            var rectID = document.getElementById("rect-"+i);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = hoverColor;
+                                rectID.style.opacity = hoverOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
+                        })
+                        .on('mouseout', function(d, i) {
+                            var rectID = document.getElementById("rect-"+i);
+                            if(rectID.getAttribute("class")!="rowRectangle-clicked"){   
+                                rectID.style.fill = "rgba(0,0,0,0)";
+                                rectID.style.opacity = 0;
+                                rectID.style.cursor = "default";
+                            }
+                        })
+                        .on('click', function(d, i) {
+                            var rectID = document.getElementById("rect-"+i); 
+                            if(rectID.getAttribute("class")=="rowRectangle-clicked"){
+                                rectID.setAttribute("class", "rowRectangle");      
+                                rectID.style.fill = "rgba(0,0,0,0)";
+                                rectID.style.opacity = 0;
+                            } else {
+                                rectID.setAttribute("class", "rowRectangle-clicked");    
+                                rectID.style.fill = clickColor;
+                                rectID.style.opacity = clickOpacity;
+                                rectID.style.cursor = "pointer";
+                            }
                         });
 }
 
@@ -421,4 +563,77 @@ function updateTotal(matJSON){
         totalCost += matJSON[i].Volume*matJSON[i].Cost;
     }
     sum.innerHTML = "$"+totalCost;
+}
+
+// Function to delete selected materials
+function deleteItems(matJSON){
+
+    var delIDs = [];
+    var clickedRect = d3.selectAll(".rowRectangle-clicked")
+                        .each(function(){
+                            var temp = d3.select(this).attr("id");
+                            delIDs.push(temp.split("-")[1]);
+                        });
+    delIDs.sort().reverse();
+
+    for(var i=matJSON.length-1; i>=0; i--){
+        if(i in delIDs){
+            delIDs.shift();
+            matJSON.splice(i, 1);
+        }
+    }
+
+    // If there are elements to display
+    if(matJSON.length>0){
+        for(var i=0; i<matJSON.length; i++){
+            matJSON[i].y = i*10;;
+        }
+        drawTable(matJSON);
+        updateTotal(matJSON);
+
+        // Display success message
+        successMsg = document.getElementById("successMsg");
+        successMsg.style.visibility = "visible";
+        waitMsg.innerHTML = "";
+        successMsg.innerHTML = "";
+        defaultText.style("visibility", "hidden");
+        successMsg.append("Successfully deleted selected material!!");
+
+    } else {    // If there are no items to display
+        matSvg = d3.select("#materials");
+        matSvgWidth = + matSvg.style('width').replace('px','');
+        matSvgHeight = +matSvg.style('height').replace('px','');
+        matInnerWidth = matSvgWidth - margin.left - margin.right;
+        matInnerHeight = matSvgHeight - margin.top - margin.bottom;
+
+        // Setting default text for materials list
+        matSvg.selectAll("*").remove();
+        matSvg.append("g")
+                .attr("id", "#default-text")
+                .append("g")
+                .attr("id", "initial-text")
+                .attr("transform", `translate(${matInnerWidth/2+margin.right},${matInnerHeight/2+margin.top+margin.bottom})`)
+                .append("text")
+                .text("No Materials")
+                .style("font-weight", 300)
+                .style("font-style", "italic")
+                .style("text-anchor", "middle")
+                .style("font-size", "22px")
+                .style("font-family", "'Open Sans', sans-serif;")
+                .style("fill", "#AEAEAF")
+                .style("color", "#AEAEAF");
+
+        // Fetching delete button by ID
+        delButton = document.getElementById("delete-button");
+        delIcon = document.getElementById("delete-icon");
+
+        // Setting initial values for delete button
+        delButton.style.backgroundColor="#3A3A44";
+        delButton.style.color="#737373";
+        delButton.style.cursor="default";
+        delButton.disabled = true;
+
+        delIcon.src="icons/delete-off.png";
+        delIcon.style.cursor="default";
+    }
 }
